@@ -1,14 +1,13 @@
-/**
- * Made by Eugen Rochko <eugen@zeonfederated.com>
- * for A&C (artistsnclients.com)
- */
+//  Zoomie.js 1.1
+//  (c) 2012 Eugen Rochko
+//  Zoomie.js may be freely distributed under the MIT license.
 
-$(function() {
+$(function () {
   'use strict';
 
-  var zwin = $('.zoomie-window');
-  var zcon = $('.zoomie');
-  var zimg = new Image();
+  var zwin = $('.zoomie-window'),
+    zcon = $('.zoomie'),
+    zimg = new Image();
 
   zimg.src = zcon.data('full-src');
 
@@ -17,8 +16,8 @@ $(function() {
       return;
     }
 
-    var ratio_x = zcon.innerWidth()  / zimg.width;
-    var ratio_y = zcon.innerHeight() / zimg.height;
+    var ratio_x = zcon.innerWidth()  / zimg.width,
+      ratio_y = zcon.innerHeight() / zimg.height;
 
     zwin.css('background-image', 'url(' + zcon.data('full-src') + ')');
 
@@ -27,9 +26,9 @@ $(function() {
     });
 
     zcon.on('mousemove', function (e) {
-      var offset = zcon.offset();
-      var x = e.pageX - offset.left;
-      var y = e.pageY - offset.top;
+      var offset = zcon.offset(),
+        x = e.pageX - offset.left,
+        y = e.pageY - offset.top;
 
       zwin.css({
         'top':  y - 100,
