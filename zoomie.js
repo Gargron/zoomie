@@ -13,6 +13,8 @@ $(function () {
 
   $(zimg).on('load', function () {
     if (zcon.innerWidth() >= zimg.width || zcon.innerHeight() >= zimg.height) {
+      // If the original image is smaller than or equal to the viewport image,
+      // then this tool is meaningless so we exit
       return;
     }
 
@@ -37,6 +39,9 @@ $(function () {
       });
 
       if (e.pageX < offset.left || e.pageY < offset.top || x > zcon.innerWidth() || y > zcon.innerHeight()) {
+        // Hide the tool if the mouse is outside of the viewport image coordinates. Can't use the
+        // onmouseleave event because the mouse would always stay in the tool and therefore in
+        // the viewport and the event would never trigger
         zwin.hide();
       }
     });
