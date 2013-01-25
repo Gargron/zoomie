@@ -2,48 +2,73 @@
 //  (c) 2012 Eugen Rochko
 //  Zoomie.js may be freely distributed under the MIT license.
 
-$(function () {
+(function ($, window, document) {
   'use strict';
 
-  var zwin = $('.zoomie-window'),
-    zcon = $('.zoomie'),
-    zimg = new Image();
+  var defaults = {
+    radius: 100
+  };
 
-  zimg.src = zcon.data('full-src');
+  var Zoomie = function (element, options) {
+    this.element = element;
+    this.options = $.extend(defaults, options);
+    this.init();
+  };
 
-  $(zimg).on('load', function () {
-    if (zcon.innerWidth() >= zimg.width || zcon.innerHeight() >= zimg.height) {
-      // If the original image is smaller than or equal to the viewport image,
-      // then this tool is meaningless so we exit
-      return;
-    }
+  Zoomie.prototype.init = function () {
+    var self = this;
 
-    var ratio_x = zcon.innerWidth()  / zimg.width,
-      ratio_y = zcon.innerHeight() / zimg.height;
+    this.windowElement    = $('<div>').addClass('zoomie-window').css('background-image', this.element.data('full-src'));
+    this.containerElement = $('<div>').addClass('zoomie');
+    this.fullImage        = new Image();
+    this.fullImage.src    = this.element.data('full-src');
 
-    zwin.css('background-image', 'url(' + zcon.data('full-src') + ')');
+    this.element.wrap(this.containerElement).after(this.windowElement);
 
-    zcon.on('mouseenter', function () {
-      zwin.show();
-    });
+    $(this.fullImage).on('load', function () {
+      self.ratioX = self.containerElement.innerWidth() / self.fullImage.width;
+      self.ratioY = self.containerElement.innerHeight() / self.fullImage.height;
 
-    zcon.on('mousemove', function (e) {
-      var offset = zcon.offset(),
-        x = e.pageX - offset.left,
-        y = e.pageY - offset.top;
+      if (self.ratioX >= 1 || self.ratioY >= 1) {
+        // If the original image is smaller than or equal to the viewport image,
+        // then this tool is meaningless so we exit
+        return;
+      }
 
-      zwin.css({
-        'top':  y - 100,
-        'left': x - 100,
-        'background-position': ((((x - zcon.innerWidth()) / ratio_x) * -1) - zimg.width + 100) + 'px ' + ((((y - zcon.innerHeight()) / ratio_y) * -1) - zimg.height + 100) + 'px'
+      self.containerElement.on('mouseenter', function () {
+        self.windowElement.show();
       });
 
-      if (e.pageX < offset.left || e.pageY < offset.top || x > zcon.innerWidth() || y > zcon.innerHeight()) {
-        // Hide the tool if the mouse is outside of the viewport image coordinates. Can't use the
-        // onmouseleave event because the mouse would always stay in the tool and therefore in
-        // the viewport and the event would never trigger
-        zwin.hide();
+      self.containerElement.on('mousemove', function (e) {
+        var offset = self.containerElement.offset(),
+          x        = e.pageX - offset.left,
+          y        = e.pageY - offset.top,
+          windowX  = x - self.options.radius,
+          windowY  = y - self.options.radius,
+          imageX   = (((x - self.containerElement.innerWidth()) / self.ratioX) * -1) - self.fullImage.width + self.options.radius,
+          imageY   = (((y - self.containerElement.innerHeight()) / self.ratioY) * -1) - self.fullImage.height + self.options.radius;
+
+        self.windowElement.css({
+          'top':  windowY,
+          'left': windowX,
+          'background-position': imageX + 'px ' + imageY + 'px'
+        });
+
+        if (e.pageX < offset.left || e.pageY < offset.top || x > self.containerElement.innerWidth() || y > self.containerElement.innerHeight()) {
+          // Hide the tool if the mouse is outside of the viewport image coordinates. Can't use the
+          // onmouseleave event because the mouse would always stay in the tool and therefore in
+          // the viewport and the event would never trigger
+          self.windowElement.hide();
+        }
+      });
+    });
+  };
+
+  $.fn.zoomie = function (options) {
+    return this.each(function () {
+      if (!$.data(this, 'plugin_zoomie')) {
+        $.data(this, 'plugin_zoomie', new Zoomie(this, options));
       }
     });
-  });
-});
+  };
+}(jQuery, window, document));
