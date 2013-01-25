@@ -19,17 +19,17 @@
     var self = this,
       resizeTimer = undefined;
 
+    this.containerElement = $('<div>').addClass('zoomie').insertAfter(this.element);
+    this.element.detach().appendTo(this.containerElement);
+
     this.windowElement = $('<div>').addClass('zoomie-window').css({
-      'background-image': this.element.data('full-src'),
+      'background-image': 'url(' + this.element.data('full-src') + ')',
       'width': self.options.radius * 2,
       'height': self.options.radius * 2
-    });
-
-    this.containerElement = $('<div>').addClass('zoomie');
+    }).appendTo(this.containerElement);
+    
     this.fullImage        = new Image();
     this.fullImage.src    = this.element.data('full-src');
-
-    this.element.wrap(this.containerElement).after(this.windowElement);
 
     $(this.fullImage).on('load', function () {
       self.ratioX = self.containerElement.innerWidth() / self.fullImage.width;
