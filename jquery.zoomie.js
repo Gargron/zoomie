@@ -16,7 +16,8 @@
   };
 
   Zoomie.prototype.init = function () {
-    var self = this;
+    var self = this,
+      resizeTimer = undefined;
 
     this.windowElement = $('<div>').addClass('zoomie-window').css({
       'background-image': this.element.data('full-src'),
@@ -33,12 +34,6 @@
     $(this.fullImage).on('load', function () {
       self.ratioX = self.containerElement.innerWidth() / self.fullImage.width;
       self.ratioY = self.containerElement.innerHeight() / self.fullImage.height;
-
-      if (self.ratioX >= 1 || self.ratioY >= 1) {
-        // If the original image is smaller than or equal to the viewport image,
-        // then this tool is meaningless so we exit
-        return;
-      }
 
       self.containerElement.on('mouseenter', function () {
         self.windowElement.show();
@@ -64,6 +59,19 @@
           // onmouseleave event because the mouse would always stay in the tool and therefore in
           // the viewport and the event would never trigger
           self.windowElement.hide();
+        }
+      });
+
+      $(window).on('resize', function () {
+        // If the window is resized it is possible that the viewport image changed size
+        // so we better calculate the ratios anew
+        if (typeof resizeTimer === "undefined") {
+          // We bubble the resize callback because we don't need it firing every millisecond
+          resizeTimer = setTimeout(function () {
+            resizeTimer = undefined;
+            self.ratioX = self.containerElement.innerWidth() / self.fullImage.width;
+            self.ratioY = self.containerElement.innerHeight() / self.fullImage.height;
+          }, 200);
         }
       });
     });
