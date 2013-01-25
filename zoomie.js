@@ -18,7 +18,12 @@
   Zoomie.prototype.init = function () {
     var self = this;
 
-    this.windowElement    = $('<div>').addClass('zoomie-window').css('background-image', this.element.data('full-src'));
+    this.windowElement = $('<div>').addClass('zoomie-window').css({
+      'background-image': this.element.data('full-src'),
+      'width': self.options.radius * 2,
+      'height': self.options.radius * 2
+    });
+
     this.containerElement = $('<div>').addClass('zoomie');
     this.fullImage        = new Image();
     this.fullImage.src    = this.element.data('full-src');

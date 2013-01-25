@@ -26,6 +26,6 @@ A JavaScript jQuery plugin, a zoom-on-hover tool for images, like a magnifying g
 ### Generated mark-up
 
     <div class="zoomie">
-      <img src="http://example.com/medium-image.png" data-full-src="http://example.com/full-image.png" alt="A smaller image" />
+      <img src="/medium-image.png" data-full-src="/full-image.png" alt="A smaller image" />
       <div class="zoomie-window"></div>
     </div>
