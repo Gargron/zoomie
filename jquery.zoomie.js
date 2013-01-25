@@ -1,6 +1,6 @@
-//  Zoomie.js 1.1
+//  jQuery Zoomie 1.2
 //  (c) 2012 Eugen Rochko
-//  Zoomie.js may be freely distributed under the MIT license.
+//  jQuery Zoomie may be freely distributed under the MIT license.
 
 (function ($, window, document) {
   'use strict';

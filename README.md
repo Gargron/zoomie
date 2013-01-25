@@ -11,9 +11,9 @@ A JavaScript jQuery plugin, a zoom-on-hover tool for images, like a magnifying g
 
 ### Usage
 
-    <link rel="stylesheet" type="text/css" href="/zoomie.css" />
+    <link rel="stylesheet" type="text/css" href="/jquery.zoomie.css" />
     <script src="/jquery.js"></script>
-    <script src="/zoomie.js"></script>
+    <script src="/jquery.zoomie.js"></script>
 
     <img id="test" src="/medium-image.png" data-full-src="/full-image.png" alt="A smaller image" />
 
