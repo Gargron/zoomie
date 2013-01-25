@@ -80,7 +80,7 @@
   $.fn.zoomie = function (options) {
     return this.each(function () {
       if (!$.data(this, 'plugin_zoomie')) {
-        $.data(this, 'plugin_zoomie', new Zoomie(this, options));
+        $.data(this, 'plugin_zoomie', new Zoomie($(this), options));
       }
     });
   };
