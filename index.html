@@ -4,11 +4,16 @@
   <meta charset="utf-8">
   <title>Zoomie.js</title>
   <link rel="stylesheet" type="text/css" href="css/jquery.zoomie.css">
+  <style type="text/css">
+    .container img { width: 100%; height: auto; }
+  </style>
 </head>
 <body>
 
-<img src="eagle_nebula_pillars.jpg" width="500" alt="" data-full-src="eagle_nebula_pillars.jpg" />
-<!-- I use the same data-full-src here but it can be any other image with the same ratio -->
+<div class="container" style="width: 500px">
+  <img src="eagle_nebula_pillars.jpg" width="500" alt="" data-full-src="eagle_nebula_pillars.jpg" />
+  <!-- I use the same data-full-src here but it can be any other image with the same ratio -->
+</div>
 
 <script src="js/jquery-1.9.1.min.js"></script>
 <script src="js/jquery.zoomie.js"></script>
