@@ -17,19 +17,23 @@
 
   Zoomie.prototype.init = function () {
     var self = this,
+      fullSrc = this.element.data('full-src'),
       resizeTimer = undefined;
+    if(!fullSrc) {
+      fullSrc = this.element[0].src;
+    }
 
     this.containerElement = $('<div>').addClass('zoomie').insertAfter(this.element);
     this.element.detach().appendTo(this.containerElement);
 
     this.windowElement = $('<div>').addClass('zoomie-window').css({
-      'background-image': 'url(' + this.element.data('full-src') + ')',
+      'background-image': 'url(' + fullSrc + ')',
       'width': self.options.radius * 2,
       'height': self.options.radius * 2
     }).appendTo(this.containerElement);
     
     this.fullImage        = new Image();
-    this.fullImage.src    = this.element.data('full-src');
+    this.fullImage.src    = fullSrc;
 
     $(this.fullImage).on('load', function () {
       self.ratioX = self.containerElement.innerWidth() / self.fullImage.width;
